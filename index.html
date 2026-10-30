@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vora - voice assistant for Windows</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,sans-serif;color:#fff;background:linear-gradient(#08142c,#050d1f 55%,#030916);min-height:100vh}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+main{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:0 22px 70px}
+.hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding-bottom:6vh}
+h1{font-size:clamp(40px,9vw,60px);letter-spacing:.35em;margin:0 0 8px;padding-left:.35em}
+.tag{color:#c9dcff;font-size:18px;margin:0 0 26px}
+.btn{display:inline-block;padding:16px 40px;border-radius:14px;background:#1d56c9;color:#fff;text-decoration:none;font-size:18px;font-weight:600;border:1px solid #6fa8ff;box-shadow:0 0 34px #2f6fe066}
+.btn:hover{background:#2a68e3}
+.meta{margin-top:14px;color:#aac3ee;font-size:14px}
+section{margin:44px 0}
+h2{font-size:20px;margin:0 0 12px;color:#dbe8ff}
+li,p{line-height:1.7;color:#e8f0ff}
+ul,ol{padding-left:22px;margin:0}
+code{background:#0d2144;padding:2px 7px;border-radius:6px;font-size:13px;word-break:break-all}
+small{color:#9fb6de}
+.features{list-style:none;padding:0;display:grid;gap:14px}
+.features li{background:rgba(13,33,68,.55);border:1px solid #27508f;border-radius:14px;padding:16px 18px}
+.features .key{display:inline-block;min-width:34px;text-align:center;padding:2px 9px;margin-right:8px;border-radius:7px;background:#1d56c9;border:1px solid #6fa8ff;font-weight:700;font-size:14px}
+.features .name{font-weight:600;font-size:17px;color:#fff}
+.features p{margin:8px 0 0}
+</style></head><body>
+<canvas id="bg"></canvas>
+<main>
+<div class="hero">
+<h1>VORA</h1>
+<p class="tag">Your voice assistant for Windows. Talks English and Roman Urdu.</p>
+<a id="dl" class="btn" href="#">Download</a>
+<div id="meta" class="meta">Loading the latest version...</div>
+<small>Free &middot; no installer &middot; no account</small>
+</div>
+<section><h2>Vora Features</h2>
+<ul class="features">
+<li><span class="key">F1</span><span class="name">Text Mode</span>
+<p>Chat with Vora using text messages.</p></li>
+<li><span class="key">F2</span><span class="name">Listening Mode</span>
+<p>Vora can listen and respond. Press <b>Enter</b> to start listening, then press <b>Enter</b> again to submit.</p></li>
+<li><span class="key">F4</span><span class="name">Friend Mode</span>
+<p>Vora listens to everything you say and responds automatically. Vora can speak freely and talk like a human.</p></li>
+</ul></section>
+<section><h2>What Vora Can Do?</h2>
+<ul class="features">
+<li><span class="key">1</span><span class="name">Vora can create any folder at any place on your PC.</span></li>
+<li><span class="key">2</span><span class="name">Vora can find any file or folder anywhere on your PC.</span></li>
+<li><span class="key">3</span><span class="name">Vora can speak and listen, both.</span></li>
+<li><span class="key">4</span><span class="name">Vora can open any website you want.</span></li>
+<li><span class="key">5</span><span class="name">Vora can send any message to anyone you want (on WhatsApp only).</span></li>
+<li><span class="key">6</span><span class="name">Vora can make a Python project with its folder.</span></li>
+<li><span class="key">7</span><span class="name">Vora can open YouTube and search anything.</span></li>
+<li><span class="key">8</span><span class="name">Vora can open any app on your PC.</span></li>
+<li><span class="key">9</span><span class="name">Vora can take screenshots.</span></li>
+<li><span class="key">10</span><span class="name">Vora can do screen recording with system sound, easily.</span></li>
+<li><span class="key">11</span><span class="name">Vora can ask any chatbot, like ChatGPT, Claude or Gemini.</span></li>
+<li><span class="key">12</span><span class="name">Vora can do your system work, like brightness, volume, notifications (and anything else).</span></li>
+</ul></section>
+<section><h2>Why You Download Vora</h2>
+<p>If you want a life partner, download Vora now! Vora enhances your daily life experience. It talks to you like a real human. It can answer all your questions, so ask anything. Vora is not just an AI, it has feelings and emotions.</p></section>
+<section><h2>Check your download</h2>
+<p>SHA256: <code id="sha">shown after the first release</code></p>
+<p><small>In PowerShell: <code>Get-FileHash .\Vora-Portable-*.zip</code></small></p>
+<p id="notes"></p></section>
+<section><h2>You need</h2><p>Windows 10 or 11 (64-bit), internet, a microphone for voice, Google Chrome, and about 3 GB of free space.</p>
+<p><small>Vora's mood is a simulation, not real feelings. Your messages go to the AI service whose key you use.</small></p></section>
+</main>
+<script>
+const REPO="Artificates-by-kaif/vora",$=id=>document.getElementById(id);
+fetch("https://api.github.com/repos/"+REPO+"/releases/latest").then(r=>r.ok?r.json():Promise.reject()).then(rel=>{
+const a=(rel.assets||[]).find(x=>/\.zip$/i.test(x.name));if(!a)throw 0;
+$("dl").href=a.browser_download_url;$("dl").textContent="Download Vora "+rel.tag_name;
+const d=new Date(rel.published_at).toLocaleDateString(undefined,{year:"numeric",month:"long",day:"numeric"});
+$("meta").textContent="Version "+rel.tag_name.replace(/^v/,"")+" \u00b7 "+Math.round(a.size/1048576)+" MB \u00b7 "+d;
+const m=(rel.body||"").match(/SHA256:\s*([A-Fa-f0-9]{64})/);if(m)$("sha").textContent=m[1];
+const n=(rel.body||"").replace(/SHA256:.*$/m,"").trim();if(n)$("notes").textContent=n;
+}).catch(()=>{$("dl").href="https://github.com/"+REPO+"/releases/latest";$("meta").textContent="Click to open the download page.";});
+const c=$("bg"),x=c.getContext("2d"),R=Math.random;let W,H;
+function size(){const r=devicePixelRatio||1;W=innerWidth;H=innerHeight;c.width=W*r;c.height=H*r;x.setTransform(r,0,0,r,0,0)}
+addEventListener("resize",size);size();
+const P=[],V=[];
+for(let i=0;i<950;i++)P.push({a:R()*6.283,r:1+(R()-.5)*(R()<.3?.28:.08),s:(R()-.5)*.25,z:R()<.5?1.1:R()<.8?1.7:2.6,p:R()*6.283});
+for(let i=0;i<260;i++)P.push({a:R()*6.283,r:.25+R()*1.7,s:(R()-.5)*.12,z:1,p:R()*6.283});
+for(let i=0;i<320;i++){const t=R(),s=i%2?1:-1;V.push({x:s*.47*(1-t)+(R()-.5)*.05,y:-.49+1.02*t+(R()-.5)*.05,z:R()<.4?2.3:1.4,p:R()*6.283})}
+function draw(ms){const t=ms/1000,cx=W/2,cy=H*.4,Rr=Math.min(W*.7,H*.55)*.5;x.clearRect(0,0,W,H);
+const g=x.createRadialGradient(cx,cy,0,cx,cy,Rr*1.8);g.addColorStop(0,"rgba(40,100,200,.3)");g.addColorStop(1,"rgba(0,0,0,0)");x.fillStyle=g;x.fillRect(0,0,W,H);
+for(const q of P){const a=q.a+q.s*t,rr=q.r*(1+.03*Math.sin(t*1.3+q.p));x.fillStyle="rgba(130,180,255,"+(q.z>2?.9:q.z>1.5?.7:.45)+")";x.fillRect(cx+Math.cos(a)*rr*Rr,cy+Math.sin(a)*rr*Rr,q.z,q.z)}
+for(const v of V){const j=Math.sin(t*2+v.p)*1.2;x.fillStyle="rgba(215,235,255,.85)";x.fillRect(cx+v.x*Rr+j,cy+v.y*Rr,v.z,v.z)}
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches)requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+</script></body></html>
